@@ -115,3 +115,66 @@ The main objective of this project is to demonstrate how Machine Learning can be
 Praveen Hunashyal
 
 GitHub: "praveen-S90" (https://github.com/praveen-S90)
+
+## Recent Project Modifications
+
+The project was enhanced with the following features:
+
+### 1. SQLite Database Integration
+- Added SQLite database to store prediction results.
+- Database file: `data/student_predictions.db`
+- Database logic is implemented in `src/database.py`.
+
+### 2. Prediction History
+- Every exam-score prediction is automatically saved to the database.
+- The Streamlit dashboard displays previous predictions in a table.
+
+### 3. Delete Prediction History
+- Added an option to delete stored prediction records.
+- Users can clear the prediction history directly from the dashboard.
+
+### 4. Custom CSS Styling
+- Added `static/style.css`.
+- Custom CSS is used to improve the appearance of the Streamlit dashboard.
+
+### 5. GitHub Version Control
+- Project is maintained using Git and GitHub.
+- `.gitignore` is configured to keep the local SQLite database out of the repository.
+
+## Current Project Architecture
+
+Student Input
+↓
+Streamlit Dashboard
+↓
+Machine Learning Model
+↓
+Predicted Exam Score
+↓
+SQLite Database
+↓
+Prediction History
+
+## Project Structure
+
+```text
+datascience_project/
+├── data/
+│   ├── Student_Performance_Factors.csv.csv
+│   └── student_predictions.db
+├── notebooks/
+│   └── 01_data_analysis.ipynb
+├── src/
+│   ├── database.py
+│   ├── main.py
+│   ├── visualization.py
+│   ├── feature_columns.pkl
+│   └── student_performance_model.pkl
+├── static/
+│   └── style.css
+├── .gitignore
+├── README.md
+└── requirement.txt
+**Important:** Since `student_predictions.db` is ignored by Git, it exists on your computer but won't be uploaded to GitHub. You can mention it in the README as a **local database file**.
+
+If you want, I can also give you a **complete final README.md** combining your original README + all these modifications, ready to replace the current file.
