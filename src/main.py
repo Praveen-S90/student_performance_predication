@@ -80,6 +80,7 @@ st.write(
 # -----------------------------
 # Student inputs
 # -----------------------------
+student_name = st.text_input("👤 Student Name")
 
 hours_studied = st.number_input(
     "Hours Studied", 0, 24, 5
@@ -155,6 +156,7 @@ if st.button("Predict Exam Score"):
     
     )
     save_prediction(
+    student_name,
     hours_studied,
     attendance,
     previous_scores,
@@ -189,6 +191,7 @@ if page == "🎯 Prediction":
             predictions,
             columns=[
                 "ID",
+                "student name",
                 "Hours Studied",
                 "Attendance",
                 "Previous Scores",

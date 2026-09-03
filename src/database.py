@@ -18,18 +18,25 @@ def create_table():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS predictions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_name TEXT,
             hours_studied REAL,
             attendance REAL,
             previous_scores REAL,
             predicted_score REAL
         )
     """)
-
-    connection.commit()
-    connection.close()
+    try:
+            cursor.execute(
+                            "ALTER TABLE predictions ADD COLUMN student_name TEXT"
+                       )
+            connection.commit()
+    except sqlite3.OperationalError:
+            pass        
+    
 
 
 def save_prediction(
+    student_name,
     hours_studied,
     attendance,
     previous_scores,
@@ -40,9 +47,10 @@ def save_prediction(
 
     cursor.execute("""
         INSERT INTO predictions
-        (hours_studied, attendance, previous_scores, predicted_score)
-        VALUES (?, ?, ?, ?)
+        (student_name,hours_studied, attendance, previous_scores, predicted_score)
+        VALUES (?, ?, ?, ?,?)
     """, (
+        student_name,
         hours_studied,
         attendance,
         previous_scores,
@@ -58,8 +66,12 @@ def get_predictions():
     cursor = connection.cursor()
 
     cursor.execute("""
-        SELECT * FROM predictions
-        ORDER BY id DESC
+        SELECT id,student_name,
+        hours_studied,attendance,
+                previous_scores,
+        predicted_score
+           FROM predictions
+           ORDER BY id DESC
     """)
 
     data = cursor.fetchall()
@@ -71,11 +83,12 @@ def get_predictions():
 if __name__ == "__main__":
     create_table()
     print("Database created successfully!")
-def delete_predictions():
+def delete_predictions():  
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute("DELETE FROM predictions")
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name='predictions'")
 
     connection.commit()
-    connection.close()    
+    connection.close()
