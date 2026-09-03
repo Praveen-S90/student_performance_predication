@@ -2,6 +2,17 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+# your other imports...
+# Load custom CSS
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSS_PATH = os.path.join(BASE_DIR, "static", "style.css")
+
+with open(CSS_PATH, "r") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+from database import create_table, save_prediction, get_predictions,delete_predictions
+
+create_table()
 
 
 st.sidebar.title("📊 Student Performance")
@@ -143,6 +154,12 @@ if st.button("Predict Exam Score"):
         f"🎯 Predicted Exam Score: {prediction:.2f}"
     
     )
+    save_prediction(
+    hours_studied,
+    attendance,
+    previous_scores,
+    prediction
+)
 
     if prediction >= 80:
         st.success("🌟 Excellent predicted performance!")
@@ -156,6 +173,32 @@ if st.button("Predict Exam Score"):
     else:
         st.error("⚠️ Low predicted performance.")
         st.markdown("---")
+        # -----------------------------
+# Prediction History
+# -----------------------------
+if page == "🎯 Prediction":
+    if st.button("🗑️ Delete Prediction History"):
+      delete_predictions()
+      st.success("Prediction history deleted successfully!")
+      st.rerun()
+
+    predictions = get_predictions()
+
+    if predictions:
+        history_df = pd.DataFrame(
+            predictions,
+            columns=[
+                "ID",
+                "Hours Studied",
+                "Attendance",
+                "Previous Scores",
+                "Predicted Score"
+            ]
+        )
+
+        st.dataframe(history_df, width="stretch")
+    else:
+        st.info("No prediction history available.")
 
 if page == "🤖 Model Performance":
     st.subheader("🤖 Model Performance")
